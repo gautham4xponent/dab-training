@@ -11,7 +11,7 @@ include:
 variables:
   catalog_name:
     description: The catalog to use
-    default: dev
+    default: xponent_databricks_workspace_dev
 
 workspace:
   host: https://adb-7405604635590717.17.azuredatabricks.net
@@ -22,12 +22,12 @@ targets:
     mode: development
     default: true
     variables:
-      catalog_name: dev
+      catalog_name: xponent_databricks_workspace_dev
   staging:
     mode: production
     variables:
-      catalog_name: staging
+      catalog_name: xponent_databricks_workspace_stg
   prod:
     mode: production
     variables:
-      catalog_name: prod
+      catalog_name: xponent_databricks_workspace_prod
