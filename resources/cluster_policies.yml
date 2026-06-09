@@ -1,25 +1,25 @@
-resources:
-  cluster_policies:
-    training_job_policy:
-      name: "dab-training-job-policy-${bundle.target}"
-      description: "Standard job cluster policy for DAB training — ${bundle.target}"
-      policy_family_id: "job-cluster-recommended"
-      policy_family_definition_overrides: |
-        {
-          "node_type_id": {
-            "type": "allowlist",
-            "values": ["Standard_DS3_v2", "Standard_DS4_v2"]
-          },
-          "autotermination_minutes": {
-            "type": "range",
-            "minValue": 10,
-            "maxValue": 60,
-            "defaultValue": 30
-          },
-          "num_workers": {
-            "type": "range",
-            "minValue": 1,
-            "maxValue": 4,
-            "defaultValue": 2
-          }
-        }
+# resources:
+#   cluster_policies:
+#     training_job_policy:
+#       name: "dab-training-job-policy-${bundle.target}"
+#       description: "Standard job cluster policy for DAB training — ${bundle.target}"
+#       policy_family_id: "job-cluster-recommended"
+#       policy_family_definition_overrides: |
+#         {
+#           "node_type_id": {
+#             "type": "allowlist",
+#             "values": ["Standard_DS3_v2", "Standard_DS4_v2"]
+#           },
+#           "autotermination_minutes": {
+#             "type": "range",
+#             "minValue": 10,
+#             "maxValue": 60,
+#             "defaultValue": 30
+#           },
+#           "num_workers": {
+#             "type": "range",
+#             "minValue": 1,
+#             "maxValue": 4,
+#             "defaultValue": 2
+#           }
+#         }

@@ -1,0 +1,29 @@
+resources:
+  jobs:
+    dab_training_job:                       # bundle resource key
+      name: "dab-training-job-${bundle.target}"   # prefixed with [dev user] in dev mode
+
+      # # ── Reusable job cluster definition ──────────────────
+      # job_clusters:
+      #   - job_cluster_key: training_cluster           # referenced by tasks below
+      #     new_cluster:
+      #       policy_id: ${resources.cluster_policies.training_job_policy.policy_id}
+      #       spark_version: "15.4.x-scala2.12"           # Databricks Runtime 15.4 LTS
+      #       node_type_id: "Standard_DS3_v2"            # Azure VM — within policy allowlist
+      #       num_workers: 2
+      #       azure_attributes:
+      #         availability: ON_DEMAND_AZURE
+
+      # ── Task definitions ─────────────────────────────────
+      tasks:
+        - task_key: ingest
+          description: "Ingest NYC taxi data to Unity Catalog"
+          # job_cluster_key: training_cluster           # references the cluster above
+          notebook_task:
+            notebook_path: ../src/01_ingest.py      # relative to resources/ folder
+            base_parameters:
+              catalog_name: ${var.catalog_name}         # resolves to dev/staging/prod
+
+      # ── Optional: email notification on failure ──────────
+      email_notifications:
+        on_failure: [gautham@xponent.ai]
