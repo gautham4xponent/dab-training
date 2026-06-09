@@ -17,6 +17,15 @@ workspace:
   host: https://adb-7405604635590717.17.azuredatabricks.net
   root_path: ~/.bundle/${bundle.name}/${bundle.target}
 
+artifacts:
+  dab_training:
+    type: whl
+    build: "pip wheel --no-deps -w dist ."
+    path: .
+    files:
+      - source: ./dist/*.whl
+        remote: /Volumes/${var.catalog_name}/default/libraries/  
+
 targets:
   dev:
     mode: development

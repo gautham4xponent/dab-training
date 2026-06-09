@@ -24,3 +24,9 @@ display(df)
 spark.sql(f"CREATE SCHEMA IF NOT EXISTS {catalog}.{schema}")
 df.write.format("delta").mode("overwrite").saveAsTable(f"{catalog}.{schema}.taxi_raw")
 print(f"Written to {catalog}.{schema}.taxi_raw")
+
+# COMMAND ----------
+# At the end of 01_ingest.py, after writing the table:
+row_count = df.count()
+dbutils.jobs.taskValues.set(key="row_count", value=row_count)
+print(f"Set task value row_count = {row_count}")

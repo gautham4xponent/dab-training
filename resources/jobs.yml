@@ -1,8 +1,8 @@
 resources:
   jobs:
     dab_training_job:                       # bundle resource key
-      name: "dab-training-job-${bundle.target}"   # prefixed with [dev user] in dev mode
-
+      name: "dab-training-job-${bundle.target}"   # prefixed with [dev user] in dev mode  
+      
       # # ── Reusable job cluster definition ──────────────────
       # job_clusters:
       #   - job_cluster_key: training_cluster           # referenced by tasks below
@@ -14,6 +14,14 @@ resources:
       #       azure_attributes:
       #         availability: ON_DEMAND_AZURE
 
+      # ── 1. Define the Serverless Environment at the job level ──
+      environments:
+        - environment_key: default_serverless_env
+          spec:
+            environment_version: "1"
+            dependencies:
+              - ${artifacts.dab_training.files[0].remote_path}
+  
       # ── Task definitions ─────────────────────────────────
       tasks:
         - task_key: ingest
@@ -23,7 +31,20 @@ resources:
             notebook_path: ../src/01_ingest.py      # relative to resources/ folder
             base_parameters:
               catalog_name: ${var.catalog_name}         # resolves to dev/staging/prod
-
+      
+        # ── Task 2: transform (NEW this session) ─────────────────
+        - task_key: transform
+          description: "Clean and enrich taxi data using Python wheel"
+          depends_on:
+            - task_key: ingest                    # only runs if ingest succeeds
+          environment_key: default_serverless_env   # references the Serverless Environment defined above
+          # job_cluster_key: training_cluster         # reuses same cluster
+          python_wheel_task:
+            package_name: dab_training            # must match setup.py name=
+            entry_point: main                     # must match console_scripts key
+            parameters:
+              - "${var.catalog_name}"
+          
       # ── Optional: email notification on failure ──────────
-      email_notifications:
-        on_failure: [gautham@xponent.ai]
+      # email_notifications:
+      #   on_failure: [gautham@xponent.ai]
