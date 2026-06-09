@@ -8,7 +8,7 @@ import pyspark.sql.functions as F
 
 # COMMAND ----------
 # Widget to accept catalog name from job parameter
-dbutils.widgets.text("catalog_name", "xponent_databricks_workspace_dev")
+dbutils.widgets.text("catalog_name", "xponent_dev")
 catalog = dbutils.widgets.get("catalog_name")
 schema = "dab_training"
 print(f"Target: {catalog}.{schema}")
