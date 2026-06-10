@@ -14,7 +14,6 @@ variables:
     default: xponent_dev
 
 workspace:
-  host: https://adb-7405604635590717.17.azuredatabricks.net
   root_path: ~/.bundle/${bundle.name}/${bundle.target}
 
 artifacts:
@@ -27,15 +26,21 @@ artifacts:
 
 targets:
   dev:
-    mode: development
+    # mode: development
     default: true
     variables:
       catalog_name: xponent_dev
+    workspace:
+      host: https://adb-7405604635590717.17.azuredatabricks.net
   staging:
     mode: production
     variables:
       catalog_name: xponent_stg
+    workspace:
+      host: https://adb-7405614680302086.6.azuredatabricks.net/
   prod:
     mode: production
     variables:
       catalog_name: xponent_prod
+    workspace:
+      host: https://adb-7405614680302086.6.azuredatabricks.net/
