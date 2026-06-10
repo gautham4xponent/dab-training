@@ -30,3 +30,17 @@ print(f"Written to {catalog}.{schema}.taxi_raw")
 row_count = df.count()
 dbutils.jobs.taskValues.set(key="row_count", value=row_count)
 print(f"Set task value row_count = {row_count}")
+
+# COMMAND ----------
+# Volume path for this environment
+volume_path = f"/Volumes/{catalog}/dab_training/raw_files/"
+print(f"Volume path: {volume_path}")
+
+# COMMAND ----------
+# Write a small sample to the volume as a parquet file (raw landing pattern)
+df.limit(1000).write.mode("overwrite").parquet(f"{volume_path}taxi_sample.parquet")
+print(f"Raw sample written to volume: {volume_path}taxi_sample.parquet")
+
+# COMMAND ----------
+# Verify the volume write succeeded
+display(dbutils.fs.ls(volume_path))

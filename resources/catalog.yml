@@ -1,0 +1,33 @@
+resources:
+
+  # ── Unity Catalog Schema ─────────────────────────────────────────────────
+  schemas:
+    training_schema:                         # bundle resource key
+      name: dab_training                       # schema name in UC — same across all envs
+      catalog_name: ${var.catalog_name}             # dev / staging / prod
+      comment: "DAB training pipeline schema — ${bundle.target} environment"
+      # Grants applied every time bundle deploy runs
+      grants:
+        # # Data engineers — full read/write access
+        # - principal: data-engineers               # Entra ID group name
+        #   privileges: [USE_SCHEMA, CREATE_TABLE, SELECT, MODIFY]
+        # # Analysts — read-only access
+        # - principal: data-analysts
+        #   privileges: [USE_SCHEMA, SELECT]
+        # Service principal — needed by CI/CD pipeline
+        - principal: gautham@xponent.ai              # SP display name or app ID
+          privileges: [USE_SCHEMA, CREATE_TABLE, SELECT, MODIFY]
+
+  # ── Unity Catalog Managed Volume ─────────────────────────────────────────
+  volumes:
+    raw_files_volume:                         # bundle resource key
+      name: raw_files                           # volume name in UC
+      catalog_name: ${var.catalog_name}
+      schema_name: ${resources.schemas.training_schema.name}  # creates deploy dependency
+      volume_type: MANAGED                     # Databricks manages the storage path
+      comment: "Managed landing volume for raw files — ${bundle.target}"
+      grants:
+        # - principal: data-engineers
+        #   privileges: [READ_VOLUME, WRITE_VOLUME]
+        - principal: gautham@xponent.ai
+          privileges: [READ_VOLUME, WRITE_VOLUME]
