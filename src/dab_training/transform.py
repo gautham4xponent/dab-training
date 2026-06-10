@@ -14,8 +14,8 @@ def transform(spark, catalog: str) -> None:
     # Calculate trip duration in minutes
     df = df.withColumn(
     "trip_duration_min",
-    (F.col("tpep_dropoff_datetime").cast("long") -
-        F.col("tpep_pickup_datetime").cast("long")) / 60
+    (F.col("dropoff_datetime").cast("long") -
+        F.col("pickup_datetime").cast("long")) / 60
     )
 
     # Filter out implausible trips (less than 1 min or more than 2 hours)
@@ -37,8 +37,13 @@ def main() -> None:
     spark = SparkSession.builder.getOrCreate()
 
     # In transform.py main(), after SparkSession is created:
-    from pyspark.dbutils import DBUtils
-    dbutils = DBUtils(spark)
+    # Works on both classic and serverless:
+    try:
+        from pyspark.dbutils import DBUtils
+        dbutils = DBUtils(spark)
+    except ImportError:
+        import IPython
+        dbutils = IPython.get_ipython().user_ns["dbutils"]
 
     row_count = dbutils.jobs.taskValues.get(
     taskKey="ingest",         # the upstream task key

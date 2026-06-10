@@ -18,10 +18,9 @@ resources:
       environments:
         - environment_key: default_serverless_env
           spec:
-            environment_version: "1"
+            environment_version: "2"
             dependencies:
-              - ${artifacts.dab_training.files[0].remote_path}
-  
+              - ${workspace.root_path}/artifacts/.internal/dab_training-0.1.0-py3-none-any.whl
       # ── Task definitions ─────────────────────────────────
       tasks:
         - task_key: ingest

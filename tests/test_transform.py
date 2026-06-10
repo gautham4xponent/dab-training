@@ -21,10 +21,10 @@ def spark():
 def test_trip_duration_calculated(spark):
   """Duration should be (dropoff - pickup) / 60 minutes."""
   data = [("2024-01-01 10:00:00", "2024-01-01 10:30:00", 15.0)]
-  df = spark.createDataFrame(data, ["tpep_pickup_datetime", "tpep_dropoff_datetime", "fare_amount"])
+  df = spark.createDataFrame(data, ["pickup_datetime", "dropoff_datetime", "fare_amount"])
   df = df.withColumn("trip_duration_min",
-    (F.col("tpep_dropoff_datetime").cast("long") -
-     F.col("tpep_pickup_datetime").cast("long")) / 60)
+    (F.col("dropoff_datetime").cast("long") -
+     F.col("pickup_datetime").cast("long")) / 60)
   assert df.collect()[0]["trip_duration_min"] == 30.0
 
 def test_duration_filter_removes_outliers(spark):
@@ -32,10 +32,10 @@ def test_duration_filter_removes_outliers(spark):
   data = [("2024-01-01 10:00:00", "2024-01-01 10:00:30", 5.0),   # 0.5 min — too short
           ("2024-01-01 10:00:00", "2024-01-01 10:20:00", 10.0),  # 20 min — valid
           ("2024-01-01 10:00:00", "2024-01-01 13:00:00", 80.0)]  # 180 min — too long
-  df = spark.createDataFrame(data, ["tpep_pickup_datetime", "tpep_dropoff_datetime", "fare_amount"])
+  df = spark.createDataFrame(data, ["pickup_datetime", "dropoff_datetime", "fare_amount"])
   df = df.withColumn("trip_duration_min",
-    (F.col("tpep_dropoff_datetime").cast("long") -
-     F.col("tpep_pickup_datetime").cast("long")) / 60)
+    (F.col("dropoff_datetime").cast("long") -
+     F.col("pickup_datetime").cast("long")) / 60)
   result = df.filter(F.col("trip_duration_min").between(1, 120))
   assert result.count() == 1
 
