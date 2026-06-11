@@ -43,7 +43,15 @@ resources:
             entry_point: main                     # must match console_scripts key
             parameters:
               - "${var.catalog_name}"
-          
+        
+         # ── Task 3: dlt_pipeline (NEW this session) ──────────────────────────
+        - task_key: dlt_pipeline
+          description: "Build Bronze-Silver-Gold tables via DLT"
+          depends_on:
+            - task_key: transform                      # runs after transform succeeds
+          pipeline_task:
+            pipeline_id: ${resources.pipelines.taxi_dlt_pipeline.id}  # bundle resource ref
+            full_refresh: false                          # incremental update only
       # ── Optional: email notification on failure ──────────
       # email_notifications:
       #   on_failure: [gautham@xponent.ai]
