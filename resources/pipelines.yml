@@ -1,0 +1,18 @@
+resources:
+  pipelines:
+    taxi_dlt_pipeline:
+      name: "taxi-dlt-pipeline-${bundle.target}"
+
+      # Unity Catalog
+      catalog: ${var.catalog_name}
+      schema: dab_training
+
+      # Serverless DLT compute
+      serverless: true
+
+      libraries:
+        - notebook:
+            path: ../src/02_dlt_pipeline.py
+
+      configuration:
+        catalog_name: ${var.catalog_name}
