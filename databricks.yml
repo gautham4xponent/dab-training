@@ -35,12 +35,12 @@ targets:
   staging:
     mode: production
     variables:
-      catalog_name: xponent_stg
+      catalog_name: xponent_staging
     workspace:
       host: https://adb-7405614680302086.6.azuredatabricks.net/
-  prod:
-    mode: production
-    variables:
-      catalog_name: xponent_prod
-    workspace:
-      host: https://adb-7405614680302086.6.azuredatabricks.net/
+  # prod:
+  #   mode: production
+  #   variables:
+  #     catalog_name: xponent_prod
+  #   workspace:
+  #     host: https://adb-7405614680302086.6.azuredatabricks.net/
