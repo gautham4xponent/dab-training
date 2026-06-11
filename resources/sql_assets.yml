@@ -1,0 +1,59 @@
+resources:
+
+  # ── SQL Warehouse ──────────────────────────────────────────────────────────
+  # commented since I dont have permissions to create warehouses in the databricks workspace. If you have permissions, feel free to uncomment and use these definitions as templates for creating your own warehouses in each environment.
+
+  # sql_warehouses:
+  #   training_warehouse:
+  #     name: "dab-training-warehouse-${bundle.target}"
+  #     cluster_size: "${var.warehouse_size}"
+  #     warehouse_type: PRO
+  #     auto_stop_mins: 10
+  #     enable_serverless_compute: true
+  #     max_num_clusters: 1
+  #     tags:
+  #       custom_tags:
+  #         - key: project
+  #           value: taxi
+
+  #         - key: layer
+  #           value: gold
+
+  #         - key: environment
+  #           value: ${bundle.target}
+
+
+  # ── Alert ──────────────────────────────────────────────────────────────────
+  alerts:
+    low_trip_count_alert:
+      display_name: "Low Daily Trip Count — ${bundle.target}"   # required
+      # warehouse_id: ${resources.sql_warehouses.training_warehouse.id}  # required
+      warehouse_id: 76a515db85dd4da0 # currently hardcoded since I dont have permission to create warehouse
+      query_text: |                                              # required (inline now)
+        SELECT
+          trip_date,
+          trip_count
+        FROM ${var.catalog_name}.dab_training.taxi_gold_daily
+        ORDER BY trip_date DESC
+        LIMIT 1
+      evaluation:
+        comparison_operator: LESS_THAN
+        threshold:
+          value:
+            double_value: 100
+        source:
+          name: trip_count          # column name from your SELECT
+          display: "Trip Count"     # optional, human-readable label
+          aggregation: MIN          # or MIN/MAX depending on your intent
+        empty_result_state: TRIGGERED
+      schedule:                                                  # required
+        quartz_cron_schedule: "0 0 * * * ?"                  # every hour
+        timezone_id: "UTC"
+        pause_status: PAUSED
+
+  # ── Lakeview Dashboard ─────────────────────────────────────────────────────
+  dashboards:
+    taxi_analytics_dashboard:
+      display_name: "NYC Taxi Analytics — ${bundle.target}"
+      file_path: ../src/taxi_dashboard.lvdash.json
+      warehouse_id: 76a515db85dd4da0

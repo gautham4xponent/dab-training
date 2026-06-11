@@ -12,6 +12,9 @@ variables:
   catalog_name:
     description: The catalog to use
     default: xponent_dev
+  warehouse_size:                                   # NEW — add this block
+    description: "SQL warehouse cluster size"
+    default: "2X-Small"
 
 workspace:
   root_path: ~/.bundle/${bundle.name}/${bundle.target}
@@ -30,17 +33,20 @@ targets:
     default: true
     variables:
       catalog_name: xponent_dev
+      warehouse_size: "2X-Small"
     workspace:
       host: https://adb-7405604635590717.17.azuredatabricks.net
   staging:
     mode: production
     variables:
       catalog_name: xponent_staging
+      warehouse_size: "X-Small"
     workspace:
       host: https://adb-7405614680302086.6.azuredatabricks.net/
-  # prod:
-  #   mode: production
-  #   variables:
-  #     catalog_name: xponent_prod
-  #   workspace:
-  #     host: https://adb-7405614680302086.6.azuredatabricks.net/
+  prod:
+    mode: production
+    variables:
+      catalog_name: xponent_prod
+      warehouse_size: "Small"
+    workspace:
+      host: https://adb-7405614680302086.6.azuredatabricks.net/
