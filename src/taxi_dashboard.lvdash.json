@@ -1,0 +1,270 @@
+{
+  "datasets": [
+    {
+      "name": "651f0c1c",
+      "displayName": "Total Trips Dataset",
+      "queryLines": [
+        "SELECT SUM(trip_count) AS total_trips\r\n",
+        "FROM xponent_dev.dab_training.taxi_gold_daily"
+      ],
+      "catalog": "xponent_dev",
+      "schema": "dab_training"
+    },
+    {
+      "name": "3a99b007",
+      "displayName": "Average Fare Dataset",
+      "queryLines": [
+        "SELECT ROUND(AVG(avg_fare_usd),2) AS avg_fare FROM xponent_dev.dab_training.taxi_gold_daily"
+      ],
+      "catalog": "xponent_dev",
+      "schema": "dab_training"
+    },
+    {
+      "name": "dea26aa0",
+      "displayName": "Taxi Trip Insights Daily Summary",
+      "queryLines": [
+        "SELECT * FROM xponent_dev.dab_training.taxi_gold_daily ORDER BY trip_date"
+      ],
+      "catalog": "xponent_dev",
+      "schema": "dab_training"
+    },
+    {
+      "name": "ce150d69",
+      "displayName": "Recent Taxi Trip Trends and Insights",
+      "queryLines": [
+        "SELECT * FROM xponent_dev.dab_training.taxi_gold_daily ORDER BY trip_date DESC LIMIT 30"
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "name": "2ddaac25",
+      "displayName": "Untitled page",
+      "layout": [
+        {
+          "widget": {
+            "name": "t",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "651f0c1c",
+                  "fields": [
+                    {
+                      "name": "sum(total_trips)",
+                      "expression": "SUM(`total_trips`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true,
+                "title": "Total Trips:",
+                "showDescription": false
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "sum(total_trips)"
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 2,
+            "y": 0,
+            "width": 2,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "average-fa",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "3a99b007",
+                  "fields": [
+                    {
+                      "name": "sum(avg_fare)",
+                      "expression": "SUM(`avg_fare`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true,
+                "title": "Average Fare ($USD):"
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "sum(avg_fare)"
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 2,
+            "y": 2,
+            "width": 2,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "dail",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "dea26aa0",
+                  "fields": [
+                    {
+                      "name": "daily(trip_date)",
+                      "expression": "DATE_TRUNC(\"DAY\", `trip_date`)"
+                    },
+                    {
+                      "name": "trip_count",
+                      "expression": "`trip_count`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "showTitle": true,
+                "title": "Daily Trip count"
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "daily(trip_date)",
+                  "scale": {
+                    "type": "temporal"
+                  }
+                },
+                "y": {
+                  "fieldName": "trip_count",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 4,
+            "y": 0,
+            "width": 7,
+            "height": 4
+          }
+        },
+        {
+          "widget": {
+            "name": "69149ef1",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "ce150d69",
+                  "fields": [
+                    {
+                      "name": "avg_duration_min",
+                      "expression": "`avg_duration_min`"
+                    },
+                    {
+                      "name": "avg_fare_usd",
+                      "expression": "`avg_fare_usd`"
+                    },
+                    {
+                      "name": "avg_tip_usd",
+                      "expression": "`avg_tip_usd`"
+                    },
+                    {
+                      "name": "total_revenue_usd",
+                      "expression": "`total_revenue_usd`"
+                    },
+                    {
+                      "name": "trip_count",
+                      "expression": "`trip_count`"
+                    },
+                    {
+                      "name": "trip_date",
+                      "expression": "`trip_date`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "avg_duration_min"
+                  },
+                  {
+                    "fieldName": "avg_fare_usd"
+                  },
+                  {
+                    "fieldName": "avg_tip_usd"
+                  },
+                  {
+                    "fieldName": "total_revenue_usd"
+                  },
+                  {
+                    "fieldName": "trip_count"
+                  },
+                  {
+                    "fieldName": "trip_date"
+                  }
+                ]
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 2,
+            "y": 4,
+            "width": 9,
+            "height": 4
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS",
+      "layoutVersion": "GRID_V1"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "widgetHeaderAlignment": "ALIGNMENT_UNSPECIFIED"
+    },
+    "applyModeEnabled": false
+  }
+}
