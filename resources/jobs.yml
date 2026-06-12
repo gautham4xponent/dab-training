@@ -9,8 +9,8 @@ resources:
       #     new_cluster:
       #       policy_id: ${resources.cluster_policies.training_job_policy.policy_id}
       #       spark_version: "15.4.x-scala2.12"           # Databricks Runtime 15.4 LTS
-      #       node_type_id: "Standard_DS3_v2"            # Azure VM — within policy allowlist
-      #       num_workers: 2
+      #       node_type_id: ${var.cluster_node_type}           # Azure VM — within policy allowlist
+      #       num_workers: ${var.cluster_num_workers}              # 1 worker for dev, 2 for staging, 4 for prod
       #       azure_attributes:
       #         availability: ON_DEMAND_AZURE
 

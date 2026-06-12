@@ -33,13 +33,15 @@
       "displayName": "Recent Taxi Trip Trends and Insights",
       "queryLines": [
         "SELECT * FROM xponent_dev.dab_training.taxi_gold_daily ORDER BY trip_date DESC LIMIT 30"
-      ]
+      ],
+      "catalog": "xponent_dev",
+      "schema": "dab_training"
     }
   ],
   "pages": [
     {
       "name": "2ddaac25",
-      "displayName": "Untitled page",
+      "displayName": "session-11 dashboard",
       "layout": [
         {
           "widget": {
@@ -221,6 +223,10 @@
             ],
             "spec": {
               "version": 2,
+              "frame": {
+                "showTitle": true,
+                "title": "Recent Taxi Trip Trends and Insights"
+              },
               "widgetType": "table",
               "encodings": {
                 "columns": [

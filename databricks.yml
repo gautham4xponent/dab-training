@@ -12,7 +12,13 @@ variables:
   catalog_name:
     description: The catalog to use
     default: xponent_dev
-  warehouse_size:                                   # NEW — add this block
+  cluster_num_workers:
+    description: "Number of workers for job clusters"
+    default: 1
+  cluster_node_type:
+    description: "Azure VM node type for job clusters"
+    default: "Standard_DS3_v2"
+  warehouse_size:
     description: "SQL warehouse cluster size"
     default: "2X-Small"
 
@@ -33,20 +39,40 @@ targets:
     default: true
     variables:
       catalog_name: xponent_dev
+      cluster_num_workers: 1
+      cluster_node_type: "Standard_DS3_v2"
       warehouse_size: "2X-Small"
+    resources:
+      jobs:
+        dab_training_job:
+          email_notifications: {}
     workspace:
       host: https://adb-7405604635590717.17.azuredatabricks.net
   staging:
     mode: production
     variables:
       catalog_name: xponent_staging
+      cluster_num_workers: 2
+      cluster_node_type: "Standard_DS3_v2"
       warehouse_size: "X-Small"
     workspace:
       host: https://adb-7405614680302086.6.azuredatabricks.net/
+      root_path: ~/.bundle/staging/${bundle.name}/${bundle.target}
   prod:
     mode: production
     variables:
       catalog_name: xponent_prod
+      cluster_num_workers: 4
+      cluster_node_type: "Standard_DS4_v2"
       warehouse_size: "Small"
+    resources:
+      jobs:
+        dab_training_job:
+          email_notifications:
+            on_failure: ["oncall@company.com"]         # only alert in prod
+          schedule:
+            quartz_cron_expression: "0 0 6 * * ?"     # run daily at 6am — prod only
+            timezone_id: "Australia/Sydney"
     workspace:
       host: https://adb-7405614680302086.6.azuredatabricks.net/
+      root_path: ~/.bundle/prod/${bundle.name}/${bundle.target}
