@@ -45,3 +45,25 @@ def test_zero_fare_removed(spark):
   df = spark.createDataFrame(data, ["fare_amount"])
   result = df.filter(F.col("fare_amount") > 0)
   assert result.count() == 2
+
+def test_empty_dataframe_handled(spark):
+  """Transform should not fail on an empty input DataFrame."""
+  from pyspark.sql.types import StructType, StructField, StringType, DoubleType
+  schema = StructType([
+    StructField("tpep_pickup_datetime", StringType()),
+    StructField("tpep_dropoff_datetime", StringType()),
+    StructField("fare_amount", DoubleType())
+  ])
+  df = spark.createDataFrame([], schema)
+  result = df.filter(F.col("fare_amount") > 0)
+  assert result.count() == 0            # empty input → empty output, no exception
+
+def test_trip_duration_column_added(spark):
+  """Output DataFrame must contain the trip_duration_min column."""
+  data = [("2024-01-01 10:00:00", "2024-01-01 10:45:00", 20.0)]
+  df = spark.createDataFrame(data, ["tpep_pickup_datetime", "tpep_dropoff_datetime", "fare_amount"])
+  df = df.withColumn("trip_duration_min",
+    (F.col("tpep_dropoff_datetime").cast("long") -
+     F.col("tpep_pickup_datetime").cast("long")) / 60)
+  assert "trip_duration_min" in df.columns
+  assert df.collect()[0]["trip_duration_min"] == 45.0

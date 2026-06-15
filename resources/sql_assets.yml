@@ -57,3 +57,5 @@ resources:
       display_name: "NYC Taxi Analytics — ${bundle.target}"
       file_path: ../src/taxi_dashboard.lvdash.json
       warehouse_id: 76a515db85dd4da0
+      dataset_catalog: ${var.catalog_name}
+      dataset_schema: dab_training

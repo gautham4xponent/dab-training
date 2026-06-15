@@ -5,7 +5,7 @@
       "displayName": "Total Trips Dataset",
       "queryLines": [
         "SELECT SUM(trip_count) AS total_trips\r\n",
-        "FROM xponent_dev.dab_training.taxi_gold_daily"
+        "FROM taxi_gold_daily"
       ],
       "catalog": "xponent_dev",
       "schema": "dab_training"
@@ -14,7 +14,7 @@
       "name": "3a99b007",
       "displayName": "Average Fare Dataset",
       "queryLines": [
-        "SELECT ROUND(AVG(avg_fare_usd),2) AS avg_fare FROM xponent_dev.dab_training.taxi_gold_daily"
+        "SELECT ROUND(AVG(avg_fare_usd),2) AS avg_fare FROM taxi_gold_daily"
       ],
       "catalog": "xponent_dev",
       "schema": "dab_training"
@@ -23,7 +23,7 @@
       "name": "dea26aa0",
       "displayName": "Taxi Trip Insights Daily Summary",
       "queryLines": [
-        "SELECT * FROM xponent_dev.dab_training.taxi_gold_daily ORDER BY trip_date"
+        "SELECT * FROM taxi_gold_daily ORDER BY trip_date"
       ],
       "catalog": "xponent_dev",
       "schema": "dab_training"
@@ -32,7 +32,7 @@
       "name": "ce150d69",
       "displayName": "Recent Taxi Trip Trends and Insights",
       "queryLines": [
-        "SELECT * FROM xponent_dev.dab_training.taxi_gold_daily ORDER BY trip_date DESC LIMIT 30"
+        "SELECT * FROM taxi_gold_daily ORDER BY trip_date DESC LIMIT 30"
       ],
       "catalog": "xponent_dev",
       "schema": "dab_training"
