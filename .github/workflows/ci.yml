@@ -43,7 +43,7 @@ jobs:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
           DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
           DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}
-          ARM_TENANT_ID: ${{ secrets.DATABRICKS_AZURE_TENANT_ID }}
+          DATABRICKS_AZURE_TENANT_ID: ${{ secrets.DATABRICKS_AZURE_TENANT_ID }}
 
       # ── Step 6: Run unit tests ─────────────────────────────────────────
       - name: Run unit tests
