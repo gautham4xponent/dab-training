@@ -27,7 +27,7 @@ jobs:
 
       # ── Step 3: Install Databricks CLI ─────────────────────────────────
       - name: Install Databricks CLI
-        uses: databricks/setup-cli@main
+        uses: databricks/setup-cli@v1         # Changed from @main to @v1 for stability
 
       # ── Step 4: Install Python deps and build wheel ─────────────────────
       - name: Install dependencies and build wheel
@@ -40,10 +40,11 @@ jobs:
       - name: Bundle validate
         run: databricks bundle validate --target dev
         env:                                         # SP credentials from GitHub Secrets
+          DATABRICKS_AUTH_TYPE: azure-client-secret
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
           DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
           DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}
-          DATABRICKS_AZURE_TENANT_ID: ${{ secrets.DATABRICKS_AZURE_TENANT_ID }}
+          DATABRICKS_TENANT_ID: ${{ secrets.DATABRICKS_AZURE_TENANT_ID }} # Corrected from ARM_TENANT_ID
 
       # ── Step 6: Run unit tests ─────────────────────────────────────────
       - name: Run unit tests
