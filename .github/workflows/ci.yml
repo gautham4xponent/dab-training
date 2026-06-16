@@ -27,7 +27,7 @@ jobs:
 
       # ── Step 3: Install Databricks CLI ─────────────────────────────────
       - name: Install Databricks CLI
-        uses: databricks/setup-cli@v1         # Changed from @main to @v1 for stability
+        uses: databricks/setup-cli@main         
 
       # ── Step 4: Install Python deps and build wheel ─────────────────────
       - name: Install dependencies and build wheel
