@@ -58,6 +58,9 @@ targets:
     workspace:
       host: https://adb-7405614680302086.6.azuredatabricks.net/
       root_path: ~/.bundle/staging/${bundle.name}/${bundle.target}
+    permissions:
+    - level: CAN_VIEW
+      group_name: Data Engineers
   prod:
     mode: production
     variables:
