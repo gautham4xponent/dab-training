@@ -36,7 +36,7 @@ jobs:
       - name: Build wheel artifact
         run: |
           pip install --upgrade pip
-          pip wheel --no-deps -w dist .
+          python setup.py bdist_wheel
 
       - name: Deploy to staging
         run: databricks bundle deploy --target staging
@@ -46,7 +46,7 @@ jobs:
     name: Deploy to Production
     runs-on: ubuntu-latest
     needs: deploy-staging                              # only runs if deploy-staging succeeds
-    environment: production                              # approval gate lives here
+    environment: staging                              # approval gate lives here
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -57,7 +57,7 @@ jobs:
       - name: Build wheel artifact
         run: |
           pip install --upgrade pip
-          pip wheel --no-deps -w dist .
+          python setup.py bdist_wheel
 
       - name: Deploy to production
         run: databricks bundle deploy --target prod
