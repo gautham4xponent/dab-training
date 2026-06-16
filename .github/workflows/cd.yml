@@ -44,24 +44,24 @@ jobs:
       - name: Deploy to staging
         run: databricks bundle deploy --target staging
 
-  # ── Job 2: Deploy to production (approval gated) ─────────────────────
-  deploy-prod:
-    name: Deploy to Production
-    runs-on: ubuntu-latest
-    needs: deploy-staging                              # only runs if deploy-staging succeeds
-    environment: staging                              # approval gate lives here
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+#   # ── Job 2: Deploy to production (approval gated) ─────────────────────
+#   deploy-prod:
+#     name: Deploy to Production
+#     runs-on: ubuntu-latest
+#     needs: deploy-staging                              # only runs if deploy-staging succeeds
+#     environment: staging                              # approval gate lives here
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v4
 
-      - name: Install Databricks CLI
-        uses: databricks/setup-cli@main
+#       - name: Install Databricks CLI
+#         uses: databricks/setup-cli@main
 
-      - name: Build wheel artifact
-        run: |
-          pip install --upgrade pip
-          python setup.py bdist_wheel
+#       - name: Build wheel artifact
+#         run: |
+#           pip install --upgrade pip
+#           python setup.py bdist_wheel
 
-      - name: Deploy to production
-        run: databricks bundle deploy --target prod
+#       - name: Deploy to production
+#         run: databricks bundle deploy --target prod
 
