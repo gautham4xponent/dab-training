@@ -14,8 +14,8 @@ def transform(spark, catalog: str) -> None:
     # Calculate trip duration in minutes
     df = df.withColumn(
     "trip_duration_min",
-    (F.col("dropoff_datetime").cast("long") -
-        F.col("pickup_datetime").cast("long")) / 60
+    (F.to_timestamp("dropoff_datetime").cast("long") -
+        F.to_timestamp("pickup_datetime").cast("long")) / 60
     )
 
     # Filter out implausible trips (less than 1 min or more than 2 hours)

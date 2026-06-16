@@ -1,0 +1,59 @@
+name: CI — Validate & Test
+
+# ── Trigger ──────────────────────────────────────────────────────────────
+on:
+  pull_request:
+    branches:
+      - main                                    # only PRs targeting main
+    types: [opened, synchronize, reopened]   # trigger on open, new commits, reopen
+  workflow_dispatch:                            # allow manual trigger from Actions UI
+
+# ── Job ──────────────────────────────────────────────────────────────────
+jobs:
+  validate-and-test:
+    name: Bundle Validate & Unit Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      # ── Step 1: Check out the repository ───────────────────────────────
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ── Step 2: Set up Python ──────────────────────────────────────────
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      # ── Step 3: Install Databricks CLI ─────────────────────────────────
+      - name: Install Databricks CLI
+        uses: databricks/setup-cli@main         
+
+      # ── Step 4: Install Python deps and build wheel ─────────────────────
+      - name: Install dependencies and build wheel
+        run: |
+          pip install pytest pyspark
+          pip install -e .                            # install the dab_training package locally
+          python setup.py bdist_wheel               # build wheel (required for validate)
+
+      # ── Step 5: bundle validate ────────────────────────────────────────
+      - name: Bundle validate
+        run: databricks bundle validate --target dev
+        env:                                         # SP credentials from GitHub Secrets
+          DATABRICKS_AUTH_TYPE: azure-client-secret
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+          ARM_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}
+          ARM_TENANT_ID: ${{ secrets.DATABRICKS_AZURE_TENANT_ID }}
+
+      # ── Step 6: Run unit tests ─────────────────────────────────────────
+      - name: Run unit tests
+        run: pytest tests/ -v --tb=short --junit-xml=test-results.xml
+
+      # ── Step 7: Upload test results (even if tests fail) ───────────────
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()                                 # upload even when tests fail
+        with:
+          name: test-results
+          path: test-results.xml
