@@ -42,9 +42,8 @@ jobs:
         env:                                         # SP credentials from GitHub Secrets
           DATABRICKS_AUTH_TYPE: azure-client-secret
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
-          DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
-          DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}
-          DATABRICKS_TENANT_ID: ${{ secrets.DATABRICKS_AZURE_TENANT_ID }}
+          ARM_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}
           ARM_TENANT_ID: ${{ secrets.DATABRICKS_AZURE_TENANT_ID }}
 
       # ── Step 6: Run unit tests ─────────────────────────────────────────
