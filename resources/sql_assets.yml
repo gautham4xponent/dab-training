@@ -28,7 +28,7 @@ resources:
     low_trip_count_alert:
       display_name: "Low Daily Trip Count — ${bundle.target}"   # required
       # warehouse_id: ${resources.sql_warehouses.training_warehouse.id}  # required
-      warehouse_id: 76a515db85dd4da0 # currently hardcoded since I dont have permission to create warehouse
+      warehouse_id: ${var.warehouse_id} # currently hardcoded since I dont have permission to create warehouse
       query_text: |                                              # required (inline now)
         SELECT
           trip_date,
@@ -56,6 +56,6 @@ resources:
     taxi_analytics_dashboard:
       display_name: "NYC Taxi Analytics — ${bundle.target}"
       file_path: ../src/taxi_dashboard.lvdash.json
-      warehouse_id: 76a515db85dd4da0
+      warehouse_id: ${var.warehouse_id}
       dataset_catalog: ${var.catalog_name}
       dataset_schema: dab_training
