@@ -11,7 +11,7 @@ resources:
         # Data engineers — full read/write access
         - principal: Data Engineers             # Entra ID group name
           privileges: [USE_SCHEMA, SELECT]
-        - principal: "sp-dab-training"              # SP display name or app (client) ID
+        - principal: d175b0ae-11d3-4553-9596-3e9f80655b33              # SP display name or app (client) ID
           privileges: [USE_SCHEMA, CREATE_TABLE, SELECT, MODIFY]
 
   # ── Unity Catalog Managed Volume ─────────────────────────────────────────
@@ -25,5 +25,5 @@ resources:
       grants:
         - principal: Data Engineers
           privileges: [READ_VOLUME, WRITE_VOLUME]
-        - principal: "sp-dab-training"
+        - principal: d175b0ae-11d3-4553-9596-3e9f80655b33
           privileges: [READ_VOLUME, WRITE_VOLUME]
