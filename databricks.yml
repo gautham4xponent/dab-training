@@ -66,6 +66,8 @@ targets:
     permissions:
     - level: CAN_VIEW
       group_name: Data Engineers
+    - level: CAN_MANAGE
+      service_principal_name: d175b0ae-11d3-4553-9596-3e9f80655b33
   prod:
     mode: production
     variables:
