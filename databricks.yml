@@ -21,6 +21,9 @@ variables:
   warehouse_size:
     description: "SQL warehouse cluster size"
     default: "2X-Small"
+  warehouse_id:
+    description: "SQL warehouse ID to use for alerts and dashboards"
+    default: 76a515db85dd4da0
 
 workspace:
   root_path: ~/.bundle/${bundle.name}/${bundle.target}
@@ -42,6 +45,7 @@ targets:
       cluster_num_workers: 1
       cluster_node_type: "Standard_DS3_v2"
       warehouse_size: "2X-Small"
+      warehouse_id: 76a515db85dd4da0
     resources:
       jobs:
         dab_training_job:
@@ -55,6 +59,7 @@ targets:
       cluster_num_workers: 2
       cluster_node_type: "Standard_DS3_v2"
       warehouse_size: "X-Small"
+      warehouse_id: c16fb03a88e29fb2
     workspace:
       host: https://adb-7405614680302086.6.azuredatabricks.net/
       root_path: ~/.bundle/staging/${bundle.name}/${bundle.target}
@@ -68,6 +73,7 @@ targets:
       cluster_num_workers: 4
       cluster_node_type: "Standard_DS4_v2"
       warehouse_size: "Small"
+      warehouse_id: c16fb03a88e29fb2
     resources:
       jobs:
         dab_training_job:
