@@ -76,14 +76,11 @@ targets:
       cluster_node_type: "Standard_DS4_v2"
       warehouse_size: "Small"
       warehouse_id: c16fb03a88e29fb2
-    resources:
-      jobs:
-        dab_training_job:
-          email_notifications:
-            on_failure: ["oncall@company.com"]         # only alert in prod
-          schedule:
-            quartz_cron_expression: "0 0 6 * * ?"     # run daily at 6am — prod only
-            timezone_id: "Australia/Sydney"
+    permissions:
+    - level: CAN_VIEW
+      group_name: Data Engineers
+    - level: CAN_MANAGE
+      service_principal_name: d175b0ae-11d3-4553-9596-3e9f80655b33
     workspace:
       host: https://adb-7405614680302086.6.azuredatabricks.net/
       root_path: ~/.bundle/prod/${bundle.name}/${bundle.target}
